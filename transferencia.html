@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Saldo e Comprar Moedas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+        }
+        .formulario {
+            margin-bottom: 20px;
+        }
+        label, input {
+            display: block;
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        .comprar-btn {
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .comprar-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Saldo de Usuários e Comprar Moedas</h1>
+
+    <!-- Formulário para adicionar novos usuários -->
+    <div class="formulario">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" placeholder="Digite o nome">
+        
+        <label for="saldo">Saldo:</label>
+        <input type="number" id="saldo" placeholder="Digite o saldo">
+        
+        <button onclick="adicionarUsuario()">Adicionar Usuário</button>
+    </div>
+
+    <!-- Tabela de usuários -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Saldo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaUsuarios">
+            <!-- Linhas de usuários serão adicionadas aqui -->
+        </tbody>
+    </table>
+
+    <script>
+        // Função para adicionar um novo usuário
+        function adicionarUsuario() {
+            const nome = document.getElementById('nome').value;
+            const saldo = document.getElementById('saldo').value;
+
+            if (nome && saldo) {
+                const tabela = document.getElementById('tabelaUsuarios');
+                const novaLinha = tabela.insertRow();
+
+                const colunaNome = novaLinha.insertCell(0);
+                const colunaSaldo = novaLinha.insertCell(1);
+                const colunaAcoes = novaLinha.insertCell(2);
+
+                colunaNome.innerText = nome;
+                colunaSaldo.innerText = saldo;
+                colunaAcoes.innerHTML = '<button class="comprar-btn" onclick="comprarMoedas()">Comprar Moedas</button>';
+
+                // Limpa os campos após adicionar o usuário
+                document.getElementById('nome').value = '';
+                document.getElementById('saldo').value = '';
+            } else {
+                alert('Por favor, preencha o nome e o saldo!');
+            }
+        }
+
+        // Função para simular a compra de moedas
+        function comprarMoedas() {
+            alert('Moedas compradas com sucesso!');
+        }
+    </script>
+
+</body>
+</html>
