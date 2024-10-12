@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .product {
+            border: 1px solid #333;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            text-align: center;
+            width: 85%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 255, 0.8);
+            background-color: #1e1e1e;
+        }
+        .product img {
+            width: 85%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .product button {
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .cart {
+            border-top: 2px solid #333;
+            margin: 20px;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            margin: 10px 0;
+            padding: 10px 0;
+        }
+        .remove-button {
+            background-color: transparent;
+            color: white;
+            padding: 5px 10px;
+            border: 1px solid #dc3545;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .remove-button:hover {
+            box-shadow: 0 0 10px #dc3545;
+        }
+        button, .cart button {
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="product-list">
+    <!-- Produtos serão adicionados aqui pelo JS -->
+</div>
+
+<div class="cart" id="cart">
+    <h2>Carrinho de Compras</h2>
+    <div id="cart-items"></div>
+    <p><strong>Total:</strong> R$ <span id="total">0.00</span></p>
+    <button id="send-order" style="display:none;">Enviar Pedido pelo WhatsApp</button>
+</div>
+
+<script>
+    const products = [
+        {
+            img: 'https://via.placeholder.com/150',
+            name: 'Produto 1',
+            description: 'Descrição do Produto 1',
+            price: 19.99
+        },
+        {
+            img: 'https://via.placeholder.com/150',
+            name: 'Produto 2',
+            description: 'Descrição do Produto 2',
+            price: 29.99
+        }
+    ];
+
+    const productList = document.getElementById('product-list');
+    const cartItems = document.getElementById('cart-items');
+    const totalElement = document.getElementById('total');
+    const sendOrderButton = document.getElementById('send-order');
+
+    let cart = [];
+    let total = 0;
+
+    products.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product';
+
+        const img = document.createElement('img');
+        img.src = product.img;
+
+        const name = document.createElement('h3');
+        name.innerText = product.name;
+
+        const description = document.createElement('p');
+        description.innerText = product.description;
+
+        const price = document.createElement('p');
+        price.innerText = `R$ ${product.price.toFixed(2)}`;
+
+        const button = document.createElement('button');
+        button.innerText = 'Adicionar ao Carrinho';
+        button.onclick = () => addToCart(product);
+
+        productDiv.appendChild(img);
+        productDiv.appendChild(name);
+        productDiv.appendChild(description);
+        productDiv.appendChild(price);
+        productDiv.appendChild(button);
+
+        productList.appendChild(productDiv);
+    });
+
+    function addToCart(product) {
+        cart.push(product);
+        total += product.price;
+        updateCart();
+    }
+
+    function removeFromCart(index) {
+        total -= cart[index].price; 
+        cart.splice(index, 1); 
+        updateCart();
+    }
+
+    function updateCart() {
+        cartItems.innerHTML = '';
+        cart.forEach((item, index) => {
+            const cartItemDiv = document.createElement('div');
+            cartItemDiv.className = 'cart-item';
+            cartItemDiv.innerHTML = `${item.name} - R$ ${item.price.toFixed(2)} <button class="remove-button" onclick="removeFromCart(${index})">Excluir</button>`;
+            cartItems.appendChild(cartItemDiv);
+        });
+        totalElement.innerText = total.toFixed(2);
+        sendOrderButton.style.display = cart.length > 0 ? 'block' : 'none';
+    }
+
+    document.getElementById('send-order').onclick = () => {
+        const order = cart.map(item => `- ${item.name} - R$ ${item.price.toFixed(2)}`).join('\n');
+        const message = `*Pedido:*\n${order}\n\n*Total:* R$ ${total.toFixed(2)}`;
+
+        const whatsappLink = `https://wa.me/5563992381687?text=${encodeURIComponent(message)}`;
+        window.open(whatsappLink);
+    };
+</script>
+</body>
+</html>
