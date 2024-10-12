@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coins app</title>
+    <!-- Adicionando o CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,23 +25,8 @@
             margin: 20px 0; /* Espaçamento superior e inferior */
         }
 
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            margin: 20px;
-        }
-
-        .product {
-            border: 1px solid #333;
-            border-radius: 10px;
-            margin: 10px;
-            padding: 10px;
-            text-align: center;
-            width: 85%;
-            max-width: 500px;
-            box-shadow: 0 4px 8px rgba(0, 0, 255, 0.8);
-            background-color: #1e1e1e;
+        .carousel-item {
+            text-align: center; /* Centraliza o conteúdo do carrossel */
         }
 
         .product img {
@@ -64,9 +51,25 @@
     <!-- Exibe o saldo em destaque -->
     <div class="saldo">Saldo: R$ 0,00</div>
 
-    <div class="container" id="product-list">
-        <!-- Produtos serão adicionados aqui pelo JS -->
+    <!-- Carrossel Bootstrap -->
+    <div id="productCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" id="product-list">
+            <!-- Produtos serão adicionados aqui pelo JS -->
+        </div>
+        <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
+
+    <!-- Adicionando o JS do Bootstrap e jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
         const products = [
@@ -83,9 +86,12 @@
 
         const productList = document.getElementById('product-list');
 
-        products.forEach(product => {
+        products.forEach((product, index) => {
             const productDiv = document.createElement('div');
-            productDiv.className = 'product';
+            productDiv.className = `carousel-item ${index === 0 ? 'active' : ''}`; // Define o primeiro item como ativo
+
+            const innerDiv = document.createElement('div');
+            innerDiv.className = 'product'; // Adiciona a classe 'product' para estilização
 
             const img = document.createElement('img');
             img.src = product.img;
@@ -103,12 +109,14 @@
             button.innerText = 'Enviar pelo WhatsApp';
             button.onclick = () => sendMessageToWhatsApp(product);
 
-            productDiv.appendChild(img);
-            productDiv.appendChild(name);
-            productDiv.appendChild(description);
-            productDiv.appendChild(price);
-            productDiv.appendChild(button);
+            // Adicionando elementos ao carrossel
+            innerDiv.appendChild(img);
+            innerDiv.appendChild(name);
+            innerDiv.appendChild(description);
+            innerDiv.appendChild(price);
+            innerDiv.appendChild(button);
 
+            productDiv.appendChild(innerDiv);
             productList.appendChild(productDiv);
         });
 
