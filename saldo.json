@@ -1,0 +1,5 @@
+[
+    { "Nome": "João Silva", "Saldo": "R$ 150,00", "Codigo": "12345678" },
+    { "Nome": "Ana Oliveira", "Saldo": "R$ 200,00", "Codigo": "87654321" },
+    { "Nome": "Maria Souza", "Saldo": "R$ 350,00", "Codigo": "23456789" }
+]
